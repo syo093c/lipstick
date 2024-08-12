@@ -49,7 +49,7 @@ def main():
     )
 
     debug=False
-    ep=int(1e4)
+    ep=int(400)
 
     lr_monitor = LearningRateMonitor(logging_interval="step")
     progress_bar = RichProgressBar()

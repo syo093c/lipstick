@@ -113,8 +113,8 @@ class WrapperModel(L.LightningModule):
         self.train_label.clear()
 
         gc.collect()
-        self.log("score/wer_score", wer_score)
-        self.log("score/cer_score", cer_score)
+        self.log("train/wer_score", wer_score)
+        self.log("train/cer_score", cer_score)
 
     def on_validation_epoch_end(self):
         print(self.val_pred[:5])
