@@ -1,4 +1,4 @@
-#from ema import EMAOptimizer
+from ema import EMAOptimizer
 from torch import nn
 from torch import optim
 from transformers import get_cosine_schedule_with_warmup
@@ -62,7 +62,7 @@ class WrapperModel(L.LightningModule):
     def configure_optimizers(self):
         train_steps = self.trainer.max_steps # note: set at trainer init
         optimizer = optim.AdamW(self.parameters(), lr=self.learning_rate,betas=(0.9, 0.999), weight_decay=0.05)
-        #optimizer= EMAOptimizer(optimizer=optimizer,device=torch.device('cuda'))
+        optimizer= EMAOptimizer(optimizer=optimizer,device=torch.device('cuda'))
         lr_scheduler = get_cosine_schedule_with_warmup(
             optimizer,
             #num_warmup_steps=int(train_steps* 0.03/self.trainer.accumulate_grad_batches),

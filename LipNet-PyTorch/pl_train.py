@@ -15,6 +15,10 @@ from lightning.pytorch.callbacks import RichProgressBar
 from lightning.pytorch.loggers import TensorBoardLogger
 from lightning.pytorch.loggers import WandbLogger
 
+import os
+import random
+import numpy as np
+
 def main():
     opt = __import__('options')
     train_dataset = MyDataset(opt.video_path,
@@ -45,7 +49,7 @@ def main():
     )
 
     debug=False
-    ep=1e4
+    ep=int(1e4)
 
     lr_monitor = LearningRateMonitor(logging_interval="step")
     progress_bar = RichProgressBar()
@@ -66,6 +70,16 @@ def main():
     
     trainer.fit(model=wrapper_model, train_dataloaders=train_dataloader, val_dataloaders=val_dataloader)
 
+def seed_everything(seed):
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = True
+    #torch.use_deterministic_algorithms(True)
 
 if __name__ == '__main__':
+    seed_everything(42)
     main()
